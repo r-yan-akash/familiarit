@@ -1,0 +1,53 @@
+/*====================================*/
+/* Typing Animation */
+/*====================================*/
+
+.type-wrap {
+    display: inline-block;
+    position: relative;
+    text-align: left;
+}
+.type-wrap b {
+    display: inline-block;
+    position: absolute;
+    white-space: nowrap;
+    left: 0;
+    top: 0;
+}
+.type-wrap b.is-active {
+    position: relative;
+}
+.no-js .type-wrap b {
+    opacity: 0;
+}
+.no-js .type-wrap b.is-active {
+    opacity: 1;
+}
+
+/* -------------------------------- 
+typing 
+-------------------------------- */
+
+.type-line.typing span {
+    display: inline-block;
+}
+.type-line.typing .type-wrap {
+    overflow: hidden;
+    vertical-align: top;
+}
+.type-line.typing .type-wrap::after {
+    /* line */
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 2px;
+    height: 100%;
+    background-color: #aebcb9;
+}
+.type-line.typing b {
+    opacity: 0;
+}
+.type-line.typing b.is-active {
+    opacity: 1;
+}
