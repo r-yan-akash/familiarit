@@ -14,6 +14,44 @@
                 </a>
             </li>
             <li class="heading">FEATURES</li>
+            //visit-site
+            <li>
+                <a href="{{route('frontend')}}"><i class="sidebar-item-icon fa fa-bookmark"></i>
+                    <span class="nav-label">Visit site</span><i class="fa fa-angle-left arrow"></i></a>
+            </li>
+            //services-bar
+            <li>
+                <a href="javascript:;"><i class="sidebar-item-icon fa fa-bookmark"></i>
+                    <span class="nav-label">Services</span><i class="fa fa-angle-left arrow"></i></a>
+                <ul class="nav-2-level collapse">
+                    <li>
+                        <a href="{{route('service.create')}}">Create services</a>
+                    </li>
+                    <li>
+                        <a href="{{route('service.index')}}">Services list</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="javascript:;"><i class="sidebar-item-icon fa fa-bookmark"></i>
+                    <span class="nav-label">Blog</span><i class="fa fa-angle-left arrow"></i></a>
+                <ul class="nav-2-level collapse">
+                    <li>
+                        <a href="../colors.html">Colors</a>
+                    </li>
+                    <li>
+                        <a href="../typography.html">Typography</a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="{{url('setting')}}"><i class="sidebar-item-icon fa fa-bookmark"></i>
+                    <span class="nav-label">Setting</span><i class="fa fa-angle-left arrow"></i></a>
+            </li>
+
+{{--            edit-from-here--}}
             <li>
                 <a href="javascript:;"><i class="sidebar-item-icon fa fa-bookmark"></i>
                     <span class="nav-label">Basic UI</span><i class="fa fa-angle-left arrow"></i></a>

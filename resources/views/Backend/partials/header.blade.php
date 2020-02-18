@@ -15,4 +15,8 @@
     <!-- THEME STYLES-->
     <link href="{{asset('/backend/css/main.min.css')}}" rel="stylesheet" />
     <!-- PAGE LEVEL STYLES-->
+
+    <!--editor-->
+    <script src="https://cdn.ckeditor.com/4.11.2/standard/ckeditor.js"></script>
+    <!--    end editor-->
 </head>
