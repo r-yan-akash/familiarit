@@ -1,15 +1,4 @@
 <?php
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 //for-frontend-panel-customize
 Route::get('/', 'Admin\HomeController@index')->name('frontend');
 //for admin-panel theme
@@ -26,9 +15,11 @@ Route::get('/content',function(){
 //end
 Route::match(['get','post'],'setting','Admin\settingController@index')->name('setting');
 Route::resource('service','Admin\ServiceController');
+Route::resource('quote','Admin\QuoteController');
+Route::resource('sliders','Admin\SliderController');
 
 
-//routes-for-auth
+//routes-for-auths
 Route::group(['prefix' => 'admin'], function () {
   Route::get('/login', 'Admin\Auth\LoginController@showLoginForm')->name('login');
   Route::post('/login', 'Admin\Auth\LoginController@login');

@@ -4,15 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Services;
+use Session;
 use Illuminate\Http\Request;
 
 class ServiceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $data=[
@@ -21,69 +17,54 @@ class ServiceController extends Controller
         return view('Backend.pages.service.index')->with($data);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         return view('Backend.pages.service.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        return $request;
+        $servicesData=$this->validation();
+        if (Services::create($servicesData)){
+            Session::flash('success','Services added successfully');
+            return redirect()->route('service.index');
+        }else{
+            Session::flash('error','Something is wrong---!');
+            return redirect()->route('service.create');
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(service $service)
     {
-        //
+        if ($service->delete()){
+            Session::flash('success','Delete Successfully');
+            return back();
+        }else{
+            Session::flash('error','Something is Error--!');
+            return back();
+        }
+    }
+
+    private function validation(){
+        return request()->validate([
+            'title'=>'required|max:50',
+            'icon'=>'required',
+            'description'=>'required|max:300',
+        ]);
     }
 }

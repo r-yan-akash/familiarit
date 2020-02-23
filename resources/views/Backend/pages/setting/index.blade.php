@@ -5,6 +5,12 @@
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
+                @if(Session::has('success'))
+                    <p class="alert alert-success">{{Session::get('success')}}</p>
+                @endif
+                    @if(Session::has('error'))
+                        <p class="alert alert-success">{{Session::get('error')}}</p>
+                    @endif
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 style="margin-top: 10px;">Setting</h1>

@@ -19,10 +19,10 @@
                 <a href="{{route('frontend')}}"><i class="sidebar-item-icon fa fa-bookmark"></i>
                     <span class="nav-label">Visit site</span><i class="fa fa-angle-left arrow"></i></a>
             </li>
-            //services-bar
+
             <li>
                 <a href="javascript:;"><i class="sidebar-item-icon fa fa-bookmark"></i>
-                    <span class="nav-label">Services</span><i class="fa fa-angle-left arrow"></i></a>
+                    <span class="nav-label">Service</span><i class="fa fa-angle-left arrow"></i></a>
                 <ul class="nav-2-level collapse">
                     <li>
                         <a href="{{route('service.create')}}">Create services</a>
@@ -35,13 +35,13 @@
 
             <li>
                 <a href="javascript:;"><i class="sidebar-item-icon fa fa-bookmark"></i>
-                    <span class="nav-label">Blog</span><i class="fa fa-angle-left arrow"></i></a>
+                    <span class="nav-label">Quote</span><i class="fa fa-angle-left arrow"></i></a>
                 <ul class="nav-2-level collapse">
                     <li>
-                        <a href="../colors.html">Colors</a>
+                        <a href="{{route('quote.create')}}">Create quote</a>
                     </li>
                     <li>
-                        <a href="../typography.html">Typography</a>
+                        <a href="{{route('quote.index')}}">quote list</a>
                     </li>
                 </ul>
             </li>

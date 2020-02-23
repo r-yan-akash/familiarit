@@ -15,8 +15,17 @@
     <!-- THEME STYLES-->
     <link href="{{asset('/backend/css/main.min.css')}}" rel="stylesheet" />
     <!-- PAGE LEVEL STYLES-->
-
+    <script src="{{asset('/backend/vendors/jquery/dist/jquery.min.js')}}" type="text/javascript"></script>
     <!--editor-->
     <script src="https://cdn.ckeditor.com/4.11.2/standard/ckeditor.js"></script>
     <!--    end editor-->
 </head>
+
+    <script>
+        window.setTimeout(function() {
+            $(".alert").fadeTo(500, 0).slideUp(500, function(){
+                $(this).remove();
+            });
+        }, 4000);
+    </script>
+

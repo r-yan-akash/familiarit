@@ -1,4 +1,4 @@
-<script src="{{asset('/backend/vendors/jquery/dist/jquery.min.js')}}" type="text/javascript"></script>
+
 <script src="{{asset('/backend/vendors/popper.js/dist/umd/popper.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('/backend/vendors/bootstrap/dist/js/bootstrap.min.js')}}" type="text/javascript"></script>
 <script src="{{asset('/backend/vendors/metisMenu/dist/metisMenu.min.js')}}" type="text/javascript"></script>
@@ -12,4 +12,5 @@
 <script src="{{asset('/backend/js/app.min.js')}}" type="text/javascript"></script>
 <!-- PAGE LEVEL SCRIPTS-->
 <script src="{{asset('/backend/js/scripts/dashboard_1_demo.js')}}" type="text/javascript"></script>
+
 
