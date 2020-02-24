@@ -17,6 +17,7 @@ Route::match(['get','post'],'setting','Admin\settingController@index')->name('se
 Route::resource('services','Admin\ServiceController');
 Route::resource('quote','Admin\QuoteController');
 Route::resource('sliders','Admin\SliderController');
+Route::post('/single-slider/', 'Admin\SliderController@singleSlider');
 
 
 //routes-for-auths
@@ -32,5 +33,6 @@ Route::group(['prefix' => 'admin'], function () {
   Route::post('/password/reset', 'Admin\Auth\ResetPasswordController@reset')->name('password.email');
   Route::get('/password/reset', 'Admin\Auth\ForgotPasswordController@showLinkRequestForm')->name('password.reset');
   Route::get('/password/reset/{token}', 'Admin\Auth\ResetPasswordController@showResetForm');
+
 });
 //end-routes-for-auth

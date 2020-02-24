@@ -14,6 +14,10 @@
     <link href="{{asset('/backend/vendors/jvectormap/jquery-jvectormap-2.0.3.css')}}" rel="stylesheet" />
     <!-- THEME STYLES-->
     <link href="{{asset('/backend/css/main.min.css')}}" rel="stylesheet" />
+
+{{--    toostr js--}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
     <!-- PAGE LEVEL STYLES-->
     <script src="{{asset('/backend/vendors/jquery/dist/jquery.min.js')}}" type="text/javascript"></script>
     <!--editor-->
