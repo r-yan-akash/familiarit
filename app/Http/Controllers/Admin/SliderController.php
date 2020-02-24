@@ -18,12 +18,47 @@ class SliderController extends Controller
     }
     public function create()
     {
-        //
+        return view('Backend.pages.slider.create');
     }
 
     public function store(Request $request)
     {
-        //
+        $request->validate([
+           'title' => 'required|min:5|max:25',
+           'description' => 'required|min:5|max:255',
+           'link1' => 'required',
+           'link2' => 'required',
+           'image' => 'required|image|mimes:jpg,jpeg,png,gif',
+        ]);
+
+        $file = $request->image;
+        $path = '/backend/uploads/slider/';
+
+        $image = $path.time().'.'.$file->getClientOriginalExtension();
+        $data = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'link1' =>$request->link1,
+            'link2' =>$request->link1,
+            'image' =>$image
+        ];
+
+        $notification = '';
+        $insert = Slider::create($data);
+        if ($insert){
+            $file->move(public_path().($path), $image);
+            $notification = array(
+                'message' => 'insert successfully',
+                'status' => 'success',
+            );
+        }
+        else{
+            $notification = array(
+                'message' => 'insert fail',
+                'status' => 'warning',
+            );
+        }
+        return back()->with($notification);
     }
 
     public function show($id)
@@ -45,5 +80,10 @@ class SliderController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function singleSlider(Request $request){
+        $slider = Slider::where('id', $request->id)->first();
+        return $slider;
     }
 }
