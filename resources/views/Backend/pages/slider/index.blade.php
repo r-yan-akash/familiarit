@@ -53,38 +53,13 @@
                         <td>{!!  substr(strip_tags($slider->description), 0, 10) !!}...</td>
                         <td>{!!  substr(strip_tags($slider->link1), 0, 10) !!}...</td>
                         <td>{!!  substr(strip_tags($slider->link1), 0, 10) !!}...</td>
-                        <td>{!!  substr(strip_tags($slider->image), 0, 10) !!}...</td>
+                        <td><img style="width: 80px; height: 80px; object-fit: cover" src="{{asset($slider->image)}}" alt=""></td>
                         <td>
-                            <button data-toggle="modal" data-target="#showModal{{$slider->id}}"
-                                    data-title="{{$slider->title}}"
-                                    data-motion="{!! $slider->motion !!}"
-                                    data-description="{!! $slider->description !!}"
-                                    data-link1="{!! $slider->link1 !!}"
-                                    data-link2="{!! $slider->link2 !!}"
-                                    data-image="{!! $slider->image !!}"
-                                    class="btn btn-default btn-xs m-r-5" data-toggle="tooltip" data-original-title="View"><i class="fa fa-eye"></i></button>
-
+                            <button slider-id="{{$slider->id}}" data-toggle="modal" data-target="#showModal" class="btn btn-default btn-xs m-r-5 view_slider" data-toggle="tooltip" data-original-title="View"><i class="fa fa-eye"></i></button>
                             <button class="btn btn-default btn-xs m-r-5" data-toggle="tooltip" data-original-title="Edit"><i class="fa fa-pencil font-14"></i></button>
                             <a href="#deleteModal{{$slider->id}}" data-toggle="modal" class="btn btn-default btn-xs m-r-5"><i style="cursor: pointer" class="fa fa-trash font-14"></i></a>
 
-                            <!---Modal-show -->
-                            <div class="modal fade" id="showModal{{$slider->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <h4 id="title"></h4><br>
-                                            <p id="motion"></p>
-                                            <spen id="description"></spen>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--end-Modal-show -->
+
 
                             <script>
                                 $('#showModal{{$slider->id}}').on('show.bs.modal', function (event) {
@@ -117,6 +92,39 @@
         </div>
     </div>
     </div>
+
+
+    <!---Modal-show -->
+    <div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="slider_body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end-Modal-show -->
+
+    <script>
+        $('.view_slider').on('click', function () {
+            let id = this.getAttribute('slider-id');
+
+            $.ajax({
+                url: '/single-slider',
+                type: "post",
+                data: { _token: "{{ csrf_token() }}",id:id},
+                success: function(response){
+                    $('#slider_body').html("<img style='width: 100%; height: 350px; object-fit: cover' src='"+ response.image+"' /> <h3 class='mt-2'>"+response.title+"</h3> <p class='mt-1'> "+response.description+"</p> ")
+                }
+            });
+        })
+    </script>
 
 
 @endsection

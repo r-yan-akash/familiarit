@@ -12,5 +12,33 @@
 <script src="{{asset('/backend/js/app.min.js')}}" type="text/javascript"></script>
 <!-- PAGE LEVEL SCRIPTS-->
 <script src="{{asset('/backend/js/scripts/dashboard_1_demo.js')}}" type="text/javascript"></script>
+{{--toostr js--}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js"></script>
+<script>
+    // toastr js option
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
+    // notifications
+    @if (Session::has('message'))
+        toastr["{{ Session::get('status') }}"]("{{ Session::get('message') }}");
+    @endif
+
+</script>
 
 
