@@ -55,9 +55,29 @@
                                     data-description="{!! $singleService->description !!}"
                                     class="btn btn-default btn-xs m-r-5" data-toggle="tooltip" data-original-title="View"><i class="fa fa-eye"></i></button>
 
-                            <button class="btn btn-default btn-xs m-r-5" data-toggle="tooltip" data-original-title="Edit"><i class="fa fa-pencil font-14"></i></button>
+                            <a href="{{route('services.edit',$singleService->id)}}" class="btn btn-default btn-xs m-r-5" data-toggle="tooltip" data-original-title="Edit"><i class="fa fa-pencil font-14"></i></a>
                             <a href="#deleteModal{{$singleService->id}}" data-toggle="modal" class="btn btn-default btn-xs m-r-5"><i style="cursor: pointer" class="fa fa-trash font-14"></i></a>
-
+                            <!-- Modal delete-->
+                            <div class="modal fade" id="deleteModal{{$singleService->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="exampleModalLabel">Are you sure to delete?</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="{!! route('services.destroy',$singleService->id) !!}" method="post">
+                                                @csrf @method('DELETE')
+                                                <button type="submit" class="btn btn-outline-danger">Delete</button>
+                                                <button type="button" class="btn btn-outline-dark" data-dismiss="modal">Cancel</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end-Modal-delete -->
 
                             <!---Modal-show -->
                             <div class="modal fade" id="showModal{{$singleService->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -71,7 +91,7 @@
                                         <div class="modal-body">
                                           <h4 id="title_id"></h4><br>
                                           <p id="icon"></p>
-                                          <spen id="description"></spen>
+                                          <p id="{!! 'description' !!}}"></p>
                                         </div>
                                     </div>
                                 </div>

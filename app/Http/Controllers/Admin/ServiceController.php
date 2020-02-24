@@ -27,10 +27,10 @@ class ServiceController extends Controller
         $servicesData=$this->validation();
         if (Services::create($servicesData)){
             Session::flash('success','Services added successfully');
-            return redirect()->route('service.index');
+            return redirect()->route('services.index');
         }else{
             Session::flash('error','Something is wrong---!');
-            return redirect()->route('service.create');
+            return redirect()->route('services.create');
         }
     }
 
@@ -39,17 +39,31 @@ class ServiceController extends Controller
         //
     }
 
-    public function edit($id)
+    public function edit(services $service)
     {
-        //
+        $data=[
+            'service'=>$service
+        ];
+        return view('Backend.pages.service.edit')->with($data);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, services $service)
     {
-        //
+        if ($this->validation()==true){
+            $service->title=$request->title;
+            $service->icon=$request->icon;
+            $service->description=$request->description;
+            if($service->save()){
+                Session::flash('success','Update successfully');
+                return redirect()->route('services.index');
+            }else{
+                Session::flash('error','Something is wrong');
+                return redirect()->route('services.index');
+            }
+        }
     }
 
-    public function destroy(service $service)
+    public function destroy(services $service)
     {
         if ($service->delete()){
             Session::flash('success','Delete Successfully');

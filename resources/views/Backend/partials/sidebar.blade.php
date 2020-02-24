@@ -25,10 +25,10 @@
                     <span class="nav-label">Service</span><i class="fa fa-angle-left arrow"></i></a>
                 <ul class="nav-2-level collapse">
                     <li>
-                        <a href="{{route('service.create')}}">Create services</a>
+                        <a href="{{route('services.create')}}">Create services</a>
                     </li>
                     <li>
-                        <a href="{{route('service.index')}}">Services list</a>
+                        <a href="{{route('services.index')}}">Services list</a>
                     </li>
                 </ul>
             </li>

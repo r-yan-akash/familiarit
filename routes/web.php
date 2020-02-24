@@ -14,7 +14,7 @@ Route::get('/content',function(){
 });
 //end
 Route::match(['get','post'],'setting','Admin\settingController@index')->name('setting');
-Route::resource('service','Admin\ServiceController');
+Route::resource('services','Admin\ServiceController');
 Route::resource('quote','Admin\QuoteController');
 Route::resource('sliders','Admin\SliderController');
 

@@ -21,7 +21,7 @@
     </section>
 
         <div class="ibox-body">
-                <form class="form-horizontal" action="{{route('service.store')}}" method="post"
+                <form class="form-horizontal" action="{{route('services.store')}}" method="post"
                       enctype="multipart/form-data" id="form-sample-1">
                     @csrf
                     @method('POST')
