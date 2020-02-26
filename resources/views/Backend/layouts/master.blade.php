@@ -30,6 +30,7 @@
     <!-- CORE PLUGINS-->
         {{--   script--}}
         @include('Backend.partials.script')
+
 </body>
 
 </html>
