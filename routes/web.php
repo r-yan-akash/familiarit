@@ -34,5 +34,12 @@ Route::group(['prefix' => 'admin'], function () {
   Route::get('/password/reset', 'Admin\Auth\ForgotPasswordController@showLinkRequestForm')->name('password.reset');
   Route::get('/password/reset/{token}', 'Admin\Auth\ResetPasswordController@showResetForm');
 
+
+
 });
 //end-routes-for-auth
+
+//  slider
+Route::get('/slider/delete/{id}', 'Admin\SliderController@delete');
+Route::get('/slider/edit/', 'Admin\SliderController@edit');
+Route::post('/slider/update/', 'Admin\SliderController@update');
