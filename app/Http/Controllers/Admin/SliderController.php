@@ -63,18 +63,46 @@ class SliderController extends Controller
 
     public function show($id)
     {
-        //
+
     }
 
-    public function edit($id)
+    public function edit(Request $request)
     {
-        //
+        //return $request;
+        $slider = Slider::where('id', $request->id)->first();
+        return $slider;
     }
 
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+
+//        $oldImg = Slider::where('id', $request->id)->first()->image;
+
+        $file = $request->image;
+        $path = '/backend/uploads/slider/';
+
+        $image = $path.time().'.'.$file->getClientOriginalExtension();
+        $data = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'image' =>$image
+        ];
+//
+//        if ($oldImg){
+//            unlink($oldImg);
+//        }
+
+        $update = Slider::where('id', $request->id)->update($data);
+
+        if ($update){
+            $file->move(public_path().($path), $image);
+            return 'updated';
+        }
+        else{
+            return 'failed';
+        }
+
     }
 
     public function destroy($id)
@@ -86,4 +114,25 @@ class SliderController extends Controller
         $slider = Slider::where('id', $request->id)->first();
         return $slider;
     }
+
+    public function delete($id){
+
+        $delete = Slider::where('id', $id)->delete();
+
+        $notification = '';
+        if ($delete){
+            $notification = array(
+                'message' => 'Delete successfully',
+                'status' => 'success',
+            );
+        }
+        else{
+            $notification = array(
+                'message' => 'Delete fail',
+                'status' => 'warning',
+            );
+        }
+        return back()->with($notification);
+    }
+
 }
