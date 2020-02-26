@@ -17,7 +17,7 @@ Route::match(['get','post'],'setting','Admin\settingController@index')->name('se
 Route::resource('service','Admin\ServiceController');
 Route::resource('quote','Admin\QuoteController');
 Route::resource('sliders','Admin\SliderController');
-Route::get('/single-slider/', 'Admin\SliderController@singleSlider');
+Route::post('/single-slider/', 'Admin\SliderController@singleSlider');
 
 
 //routes-for-auths
