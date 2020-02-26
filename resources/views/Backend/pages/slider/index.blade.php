@@ -118,8 +118,9 @@
             $.ajax({
                 url: '/single-slider',
                 type: "post",
-                data: { _token: "{{ csrf_token() }}",id:id},
+                data: { _token: "{{ csrf_token() }}", id:id},
                 success: function(response){
+                    // console.log(response)
                     $('#slider_body').html("<img style='width: 100%; height: 350px; object-fit: cover' src='"+ response.image+"' /> <h3 class='mt-2'>"+response.title+"</h3> <p class='mt-1'> "+response.description+"</p> ")
                 }
             });
