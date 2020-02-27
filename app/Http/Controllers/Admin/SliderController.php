@@ -77,17 +77,25 @@ class SliderController extends Controller
     public function update(Request $request)
     {
 
-//        $oldImg = Slider::where('id', $request->id)->first()->image;
+//      $oldImg = Slider::where('id', $request->id)->first()->image;
 
-        $file = $request->image;
-        $path = '/backend/uploads/slider/';
 
-        $image = $path.time().'.'.$file->getClientOriginalExtension();
+
         $data = [
             'title' => $request->title,
             'description' => $request->description,
-            'image' =>$image
         ];
+//        if image found
+        $file = $request->image;
+        if ($file){
+            $path = '/backend/uploads/slider/';
+            $image = $path.time().'.'.$file->getClientOriginalExtension();
+            $file->move(public_path().($path), $image);
+            $data = [
+                'image' =>$image
+            ];
+        }
+
 //
 //        if ($oldImg){
 //            unlink($oldImg);
@@ -96,7 +104,6 @@ class SliderController extends Controller
         $update = Slider::where('id', $request->id)->update($data);
 
         if ($update){
-            $file->move(public_path().($path), $image);
             return 'updated';
         }
         else{
@@ -115,24 +122,16 @@ class SliderController extends Controller
         return $slider;
     }
 
-    public function delete($id){
+    public function delete(Request $request){
 
-        $delete = Slider::where('id', $id)->delete();
+        $delete = Slider::where('id', $request->id)->delete();
 
-        $notification = '';
         if ($delete){
-            $notification = array(
-                'message' => 'Delete successfully',
-                'status' => 'success',
-            );
+            return 'delete successful';
         }
         else{
-            $notification = array(
-                'message' => 'Delete fail',
-                'status' => 'warning',
-            );
+            return 'delete failed';
         }
-        return back()->with($notification);
     }
 
 }

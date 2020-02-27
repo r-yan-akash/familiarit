@@ -40,7 +40,7 @@
                 </thead>
                 <tbody>
                 @foreach($sliders as $key=>$slider)
-                    <tr>
+                    <tr class="slider-row-{{$slider->id}}">
                         <td>
                             <label class="ui-checkbox">
                                 <input type="checkbox">
@@ -48,16 +48,16 @@
                             </label>
                         </td>
                         <td>{{++$key}}</td>
-                        <td>{!!  substr(strip_tags($slider->title), 0, 10) !!}...</td>
+                        <td class="title-row-{{$slider->id}}">{!!  substr(strip_tags($slider->title), 0, 10) !!}...</td>
                         <td>{{$slider->motion}}</td>
-                        <td>{!!  substr(strip_tags($slider->description), 0, 10) !!}...</td>
+                        <td class="desc-row-{{$slider->id}}">{!!  substr(strip_tags($slider->description), 0, 10) !!}...</td>
                         <td>{!!  substr(strip_tags($slider->link1), 0, 10) !!}...</td>
                         <td>{!!  substr(strip_tags($slider->link1), 0, 10) !!}...</td>
-                        <td><img style="width: 80px; height: 80px; object-fit: cover" src="{{asset($slider->image)}}" alt=""></td>
+                        <td><img class="img-row-{{$slider->id}}" style="width: 80px; height: 80px; object-fit: cover" src="{{asset($slider->image)}}" alt=""></td>
                         <td>
                             <button style="cursor:pointer;" slider-id="{{$slider->id}}" data-toggle="modal" data-target="#showModal" class="btn btn-default btn-xs m-r-5 view_slider" data-toggle="tooltip" data-original-title="View"><i class="fa fa-eye"></i></button>
                             <button style="cursor:pointer;" class="btn btn-default btn-xs m-r-5 edit_slider" slider-id="{{$slider->id}}"><i class="fa fa-edit"></i></button>
-                            <a href="{{url('/slider/delete/'.$slider->id)}}" class="btn btn-default btn-xs m-r-5"><i style="cursor: pointer" class="fa fa-trash font-14"></i></a>
+                            <button  class="btn btn-default btn-xs m-r-5 delete_slider" delete-id="{{$slider->id}}"><i style="cursor: pointer" class="fa fa-trash font-14"></i></button>
 
 
 
@@ -188,13 +188,17 @@
                 url:"/slider/edit/",
                 data:data,
                 success: function (response) {
-                    console.log(response);
                     $('#editModal').modal('show');
                     $('#editTitle').val(response.title);
 
-                    // remove html tag
-                    let desc = $(response.description).text();
-                    $('#editDesc').val(desc);
+                    // check if html
+                    let desc = response.description;
+                    if ( desc.search('<') !== -1){
+                        $('#editDesc').val($(desc).text());
+                    }
+                    else{
+                        $('#editDesc').val(desc);
+                    }
                     $('#oldImg').attr('src', response.image);
                     document.getElementById('editSubmit').setAttribute('update-id', id);
                 }
@@ -209,26 +213,49 @@
             data.append('id', id);
             data.append('title', $('#editTitle').val());
             data.append('description', $('#editDesc').val());
-            data.append('image', document.getElementById('editImage').files[0]);
+            let img = document.getElementById('editImage').files[0];
+
+            if (img){
+                data.append('image', img);
+            }
             data.append('_token', '{{ csrf_token() }}');
-            // let data = {
-            //     title : $('#editTitle').val(),
-            //     description : $('#editDesc').val(),
-            //     image : $('#editDesc').val(),
-            // };
 
             $.ajax({
                 type:"POST",
-                cache:false,
                 url:"/slider/update/",
                 processData: false, contentType: false,
                 data:data,
                 success: function (response) {
-                    console.log(response);
+                    toastr["success"]("Data has been Updated!")
                     //change real data in table
+                    $('.title-row-'+id).text($('#editTitle').val());
+                    $('.desc-row-'+id).text($('#editDesc').val());
+                    if (img){
+                        $('.img-row-'+id).attr('src', window.URL.createObjectURL(img));
+                    }
+                    $('#editModal').modal('hide');
+                }
+            });
+        });
+
+        // delete slider
+        $('.delete_slider').on('click', function(){
+            let id = $(this).attr("delete-id");
+            $.ajax({
+                type:"GET",
+                cache:false,
+                url:"slider/delete/",
+                data:{id:id},
+                success: function (response) {
+                    console.log(response);
+                    // slider remove
+                    $('.slider-row-'+id).remove();
+                    // notification
+                    toastr["success"]("Data has been deleted!")
                 }
             });
         })
+
     </script>
 
 
