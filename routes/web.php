@@ -13,11 +13,29 @@ Route::get('/content',function(){
     return view('Backend.pages.contact.create');
 });
 //end
+//start-setting
 Route::match(['get','post'],'setting','Admin\settingController@index')->name('setting');
+//end-setting
+
+//start-services
+Route::get('services/delete/', 'Admin\ServiceController@destroy');
+Route::get('/services/edit', 'Admin\ServiceController@edit');
+Route::post('/single-service', 'Admin\ServiceController@singleService');
 Route::resource('services','Admin\ServiceController');
+
+//end-services
+
+//start-quote
 Route::resource('quote','Admin\QuoteController');
+//end-quote
+
+//start-slider
 Route::resource('sliders','Admin\SliderController');
 Route::post('/single-slider/', 'Admin\SliderController@singleSlider');
+Route::get('/slider/edit/', 'Admin\SliderController@edit');
+Route::post('/slider/update/', 'Admin\SliderController@update');
+Route::get('slider/delete/', 'Admin\SliderController@delete');
+//end-slider
 
 
 //routes-for-auths
@@ -39,7 +57,4 @@ Route::group(['prefix' => 'admin'], function () {
 });
 //end-routes-for-auth
 
-//  slider
-Route::get('/slider/edit/', 'Admin\SliderController@edit');
-Route::post('/slider/update/', 'Admin\SliderController@update');
-Route::get('slider/delete/', 'Admin\SliderController@delete');
+

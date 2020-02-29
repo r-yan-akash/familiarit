@@ -166,7 +166,7 @@
     <script>
         $('.view_slider').on('click', function () {
             let id = this.getAttribute('slider-id');
-
+            // console.log(id);
             $.ajax({
                 url: '/single-slider',
                 type: "post",
@@ -255,7 +255,6 @@
                 }
             });
         })
-
     </script>
 
 

@@ -5,12 +5,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 style="margin-top: 10px;">Services</h1>
+                    <h1 style="margin-top: 10px;">Slider</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Services</a></li>
+                        <li class="breadcrumb-item"><a href="#">Slider</a></li>
 
                         <li class="breadcrumb-item active">Create</li>
                     </ol>
@@ -34,17 +34,16 @@
                     @enderror
                 </div>
             </div>
-
             <div class="form-group row">
-                <label class="col-sm-2 col-form-label">Description</label>
+                <label class="col-sm-2 col-form-label">Motion</label>
                 <div class="col-sm-10">
-                    <textarea name="description" maxlength="300" id="editor1" rows="4" placeholder="Description..." class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
-                    <small style="color: indianred">*Text all most 300 char...</small>
-                    @error('description')
+                    <input class="form-control @error('motion') is-invalid @enderror" type="text" name="motion" value="{{ old('motion') }}">
+                    @error('motion')
                     <div class="form-control-feedback">{{$message}}</div>
                     @enderror
                 </div>
             </div>
+
             <div class="form-group row">
                 <label class="col-sm-2 col-form-label">Link 1</label>
                 <div class="col-sm-10">
@@ -70,6 +69,16 @@
                 <div class="col-sm-10">
                     <input class="form-control @error('image') is-invalid @enderror" type="file" name="image">
                     @error('image')
+                    <div class="form-control-feedback">{{$message}}</div>
+                    @enderror
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Description</label>
+                <div class="col-sm-10">
+                    <textarea name="description" maxlength="300" id="editor1" rows="4" placeholder="Description..." class="form-control @error('description') is-invalid @enderror">{{ old('description') }}</textarea>
+                    <small style="color: indianred">*Text all most 300 char...</small>
+                    @error('description')
                     <div class="form-control-feedback">{{$message}}</div>
                     @enderror
                 </div>

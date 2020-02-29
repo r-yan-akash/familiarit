@@ -39,12 +39,10 @@ class ServiceController extends Controller
         //
     }
 
-    public function edit(services $service)
+    public function edit(Request $request)
     {
-        $data=[
-            'service'=>$service
-        ];
-        return view('Backend.pages.service.edit')->with($data);
+        $services=Services::where('id',$request)->first();
+        return $services;
     }
 
     public function update(Request $request, services $service)
@@ -63,15 +61,19 @@ class ServiceController extends Controller
         }
     }
 
-    public function destroy(services $service)
+    public function destroy(Request $request)
     {
-        if ($service->delete()){
-            Session::flash('success','Delete Successfully');
-            return back();
+        $delete=Services::where('id',$request->id)->delete();
+        if ($delete){
+            return "Delete successfully";
         }else{
-            Session::flash('error','Something is Error--!');
-            return back();
+            return "Delete Failed---!";
         }
+    }
+
+    public function singleService(Request $request){
+        $service=Services::where('id',$request->id)->first();
+        return $service;
     }
 
     private function validation(){
