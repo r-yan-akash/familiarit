@@ -40,6 +40,6 @@ Route::group(['prefix' => 'admin'], function () {
 //end-routes-for-auth
 
 //  slider
-Route::get('/slider/delete/{id}', 'Admin\SliderController@delete');
 Route::get('/slider/edit/', 'Admin\SliderController@edit');
 Route::post('/slider/update/', 'Admin\SliderController@update');
+Route::get('slider/delete/', 'Admin\SliderController@delete');
