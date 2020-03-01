@@ -76,34 +76,23 @@
                                                         <input class="form-control" type="text" name="title" id="editTitle">
                                                     </div>
                                                 </div>
-
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label">Icon</label>
+                                                    <div class="col-sm-10">
+                                                        <input class="form-control" type="text" name="icon" id="editIcon">
+                                                    </div>
+                                                </div>
                                                 <div class="form-group row">
                                                     <label class="col-sm-2 col-form-label">Description</label>
                                                     <div class="col-sm-10">
                                                         <textarea name="description" maxlength="300" rows="4" placeholder="Description..." class="form-control" id="editDesc"></textarea>
                                                     </div>
                                                 </div>
-
-                                                <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label">Image</label>
-                                                    <div class="col-sm-10">
-                                                        <input class="form-control" type="file" name="image" id="editImage" onchange="document.getElementById('oldImg').src = window.URL.createObjectURL(this.files[0])">
-                                                    </div>
-                                                </div>
-
                                                 <div class="form-group row">
                                                     <div class="col-sm-10 ml-sm-auto">
                                                         <button class="btn btn-info text-right" type="submit" id="editSubmit">Submit</button>
                                                     </div>
                                                 </div>
-
-                                                <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label">Preview</label>
-                                                    <div class="col-sm-10">
-                                                        <img style="width: 150px; height: 150px; object-fit: cover" src="" alt="" id="oldImg" >
-                                                    </div>
-                                                </div>
-
                                             </form>
                                         </div>
                                     </div>
@@ -187,11 +176,44 @@
                     data:data,
 
                     success:function (response) {
+                        console.log(response)
                         $('#editModal').modal('show');
                         $('#editTitle').val(response.title);
+                        $('#editIcon').val(response.icon);
+                        // check if html
+                        let desc = response.description;
+                        if ( desc.search('<') !== -1){
+                            $('#editDesc').val($(desc).text());
+                        }
+                        else{
+                            $('#editDesc').val(desc);
+                        }
+                        document.getElementById('editSubmit').setAttribute('update-id', id);
                     }
                 });
             });
+        // edit form submit
+        $('#editSubmit').on('click', function(e) {
+            e.preventDefault();
+            let id = $(this).attr("update-id");
+            let data =
+            $.ajax({
+                type:"POST",
+                url:"/slider/update/",
+                processData: false, contentType: false,
+                data:data,
+                success: function (response) {
+                    toastr["success"]("Data has been Updated!")
+                    //change real data in table
+                    $('.title-row-'+id).text($('#editTitle').val());
+                    $('.desc-row-'+id).text($('#editDesc').val());
+                    if (img){
+                        $('.img-row-'+id).attr('src', window.URL.createObjectURL(img));
+                    }
+                    $('#editModal').modal('hide');
+                }
+            });
+        });
 
     </script>
 

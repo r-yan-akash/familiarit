@@ -41,7 +41,7 @@ class ServiceController extends Controller
 
     public function edit(Request $request)
     {
-        $services=Services::where('id',$request)->first();
+        $services=Services::where('id',$request->id)->first();
         return $services;
     }
 
