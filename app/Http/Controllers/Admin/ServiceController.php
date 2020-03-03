@@ -47,19 +47,13 @@ class ServiceController extends Controller
 
     public function update(Request $request)
     {
-        $data = [
-            'title' => $request->title,
-            'description' => $request->description,
-            'icon' => $request->icon,
-        ];
-        $update = Services::where('id', $request->id)->update($data);
+        Services::update([
+           'title' => $request->title,
+           'icon' => $request->icon,
+           'description' => $request->description,
+        ]);
 
-        if ($update){
-            return 'updated';
-        }
-        else{
-            return 'failed';
-        }
+        return 'update successfull';
     }
 
     public function destroy(Request $request)

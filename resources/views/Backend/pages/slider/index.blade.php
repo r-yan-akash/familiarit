@@ -226,7 +226,7 @@
                 processData: false, contentType: false,
                 data:data,
                 success: function (response) {
-                    toastr["success"]("Data has been Updated!")
+                    toastr["success"]("Data has been Updated!");
                     //change real data in table
                     $('.title-row-'+id).text($('#editTitle').val());
                     $('.desc-row-'+id).text($('#editDesc').val());

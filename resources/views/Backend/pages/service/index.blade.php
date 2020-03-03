@@ -45,9 +45,9 @@
                             </label>
                         </td>
                         <td>{{++$key}}</td>
-                        <td>{!!  substr(strip_tags($singleService->title), 0, 10) !!}...</td>
-                        <td>{{$singleService->icon}}</td>
-                        <td>{!!  substr(strip_tags($singleService->description), 0, 10) !!}...</td>
+                        <td class="title-row-{{$singleService->id}}">{!!  substr(strip_tags($singleService->title), 0, 10) !!}...</td>
+                        <td class="icon-row-{{$singleService->id}}">{{$singleService->icon}}</td>
+                        <td class="desc-row-{{$singleService->id}}">{!!  substr(strip_tags($singleService->description), 0, 10) !!}...</td>
                         <td>
                             <button data-target="#showModal" data-toggle="modal" service-id="{{$singleService->id}}"
                                     class="btn btn-default btn-xs m-r-5 view_services"><i class="fa fa-eye"></i></button>
@@ -196,17 +196,10 @@
         $('#editSubmit').on('click', function(e) {
             e.preventDefault();
             let id = $(this).attr("update-id");
-            let data = new FormData();
-            data.append('id', id);
-            data.append('title', $('#editTitle').val());
-            data.append('description', $('#editDesc').val());
-            data.append('icon', $('#editIcon').val());
-
-            data.append('_token', '{{ csrf_token() }}');
-
+            let data =
             $.ajax({
                 type:"POST",
-                url:"services/update/",
+                url:"/slider/update/",
                 processData: false, contentType: false,
                 data:data,
                 success: function (response) {
@@ -214,29 +207,10 @@
                     //change real data in table
                     $('.title-row-'+id).text($('#editTitle').val());
                     $('.desc-row-'+id).text($('#editDesc').val());
-                    $('.desc-row-'+id).text($('#editIcon').val());
                     $('#editModal').modal('hide');
                 }
             });
         });
-        // $('#editSubmit').on('click', function(e) {
-        //     e.preventDefault();
-        //     let id = $(this).attr("update-id");
-        //     let data =
-        //     $.ajax({
-        //         type:"POST",
-        //         url:"/slider/update/",
-        //         processData: false, contentType: false,
-        //         data:data,
-        //         success: function (response) {
-        //             toastr["success"]("Data has been Updated!")
-        //             //change real data in table
-        //             $('.title-row-'+id).text($('#editTitle').val());
-        //             $('.desc-row-'+id).text($('#editDesc').val());
-        //             $('#editModal').modal('hide');
-        //         }
-        //     });
-        // });
 
     </script>
 

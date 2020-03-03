@@ -19,8 +19,8 @@ Route::match(['get','post'],'setting','Admin\settingController@index')->name('se
 
 //start-services
 Route::get('services/delete/', 'Admin\ServiceController@destroy');
-Route::get('services/edit', 'Admin\ServiceController@edit');
-Route::post('services/update', 'Admin\ServiceController@update');
+Route::get('/services/edit', 'Admin\ServiceController@edit');
+Route::post('/services/update/', 'Admin\ServiceController@update');
 Route::post('/single-service', 'Admin\ServiceController@singleService');
 Route::resource('services','Admin\ServiceController');
 
