@@ -213,8 +213,8 @@
                     toastr["success"]("Data has been Updated!")
                     //change real data in table
                     $('.row-title-'+id).text($('#editTitle').val());
-                    $('.row-icon-'+id).text($('#editDesc').val());
-                    $('.row-desc-'+id).text($('#editIcon').val());
+                    $('.row-icon-'+id).text($('#editIcon').val());
+                    $('.row-desc-'+id).text($('#editDesc').val());
                     $('#editModal').modal('hide');
                 }
             });
