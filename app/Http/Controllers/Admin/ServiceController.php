@@ -47,7 +47,9 @@ class ServiceController extends Controller
 
     public function update(Request $request)
     {
-        Services::update([
+
+//        return $request->id;
+        Services::where('id', $request->id)->update([
            'title' => $request->title,
            'icon' => $request->icon,
            'description' => $request->description,
@@ -78,4 +80,16 @@ class ServiceController extends Controller
             'description'=>'required|max:300',
         ]);
     }
+
+    function add(Request $request){
+       $service = Services::create([
+            'title' => $request->title,
+            'icon' => $request->icon,
+            'description' => $request->description,
+        ])->id;
+
+
+        return $service;
+    }
+
 }
