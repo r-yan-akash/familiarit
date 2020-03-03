@@ -45,19 +45,20 @@ class ServiceController extends Controller
         return $services;
     }
 
-    public function update(Request $request, services $service)
+    public function update(Request $request)
     {
-        if ($this->validation()==true){
-            $service->title=$request->title;
-            $service->icon=$request->icon;
-            $service->description=$request->description;
-            if($service->save()){
-                Session::flash('success','Update successfully');
-                return redirect()->route('services.index');
-            }else{
-                Session::flash('error','Something is wrong');
-                return redirect()->route('services.index');
-            }
+        $data = [
+            'title' => $request->title,
+            'description' => $request->description,
+            'icon' => $request->icon,
+        ];
+        $update = Services::where('id', $request->id)->update($data);
+
+        if ($update){
+            return 'updated';
+        }
+        else{
+            return 'failed';
         }
     }
 

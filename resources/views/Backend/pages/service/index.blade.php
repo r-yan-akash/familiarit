@@ -196,10 +196,17 @@
         $('#editSubmit').on('click', function(e) {
             e.preventDefault();
             let id = $(this).attr("update-id");
-            let data =
+            let data = new FormData();
+            data.append('id', id);
+            data.append('title', $('#editTitle').val());
+            data.append('description', $('#editDesc').val());
+            data.append('icon', $('#editIcon').val());
+
+            data.append('_token', '{{ csrf_token() }}');
+
             $.ajax({
                 type:"POST",
-                url:"/slider/update/",
+                url:"services/update/",
                 processData: false, contentType: false,
                 data:data,
                 success: function (response) {
@@ -207,13 +214,29 @@
                     //change real data in table
                     $('.title-row-'+id).text($('#editTitle').val());
                     $('.desc-row-'+id).text($('#editDesc').val());
-                    if (img){
-                        $('.img-row-'+id).attr('src', window.URL.createObjectURL(img));
-                    }
+                    $('.desc-row-'+id).text($('#editIcon').val());
                     $('#editModal').modal('hide');
                 }
             });
         });
+        // $('#editSubmit').on('click', function(e) {
+        //     e.preventDefault();
+        //     let id = $(this).attr("update-id");
+        //     let data =
+        //     $.ajax({
+        //         type:"POST",
+        //         url:"/slider/update/",
+        //         processData: false, contentType: false,
+        //         data:data,
+        //         success: function (response) {
+        //             toastr["success"]("Data has been Updated!")
+        //             //change real data in table
+        //             $('.title-row-'+id).text($('#editTitle').val());
+        //             $('.desc-row-'+id).text($('#editDesc').val());
+        //             $('#editModal').modal('hide');
+        //         }
+        //     });
+        // });
 
     </script>
 
