@@ -45,9 +45,9 @@
                             </label>
                         </td>
                         <td>{{++$key}}</td>
-                        <td>{!!  substr(strip_tags($singleService->title), 0, 10) !!}...</td>
-                        <td>{{$singleService->icon}}</td>
-                        <td>{!!  substr(strip_tags($singleService->description), 0, 10) !!}...</td>
+                        <td id="row-title-{{$singleService->id}}">{!!  substr(strip_tags($singleService->title), 0, 10) !!}...</td>
+                        <td id="row-icon-{{$singleService->id}}">{{$singleService->icon}}</td>
+                        <td id="row-desc-{{$singleService->id}}">{!!  substr(strip_tags($singleService->description), 0, 10) !!}...</td>
                         <td>
                             <button data-target="#showModal" data-toggle="modal" service-id="{{$singleService->id}}"
                                     class="btn btn-default btn-xs m-r-5 view_services"><i class="fa fa-eye"></i></button>
@@ -212,9 +212,9 @@
                 success: function (response) {
                     toastr["success"]("Data has been Updated!")
                     //change real data in table
-                    $('.title-row-'+id).text($('#editTitle').val());
-                    $('.desc-row-'+id).text($('#editDesc').val());
-                    $('.desc-row-'+id).text($('#editIcon').val());
+                    $('.row-title-'+id).text($('#editTitle').val());
+                    $('.row-icon-'+id).text($('#editDesc').val());
+                    $('.row-desc-'+id).text($('#editIcon').val());
                     $('#editModal').modal('hide');
                 }
             });
