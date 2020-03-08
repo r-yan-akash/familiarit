@@ -33,6 +33,7 @@ Route::resource('quote','Admin\QuoteController');
 
 //start-slider
 Route::resource('sliders','Admin\SliderController');
+Route::post('/slider/add/', 'Admin\SliderController@add');
 Route::post('/single-slider/', 'Admin\SliderController@singleSlider');
 Route::get('/slider/edit/', 'Admin\SliderController@edit');
 Route::post('/slider/update/', 'Admin\SliderController@update');

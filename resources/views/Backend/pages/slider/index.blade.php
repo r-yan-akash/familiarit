@@ -20,6 +20,9 @@
                 </div>
             </div>
         </div>
+        <div class="add_btn text-right pr-5">
+            <button class="btn btn-secondary" data-toggle="modal" data-target="#addSlider">Add service</button>
+        </div>
         <!-- /.container-fluid -->
     </section>
     <div class="ibox-body">
@@ -38,7 +41,7 @@
                     <th>....</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="all_slider">
                 @foreach($sliders as $key=>$slider)
                     <tr class="slider-row-{{$slider->id}}">
                         <td>
@@ -58,32 +61,6 @@
                             <button style="cursor:pointer;" slider-id="{{$slider->id}}" data-toggle="modal" data-target="#showModal" class="btn btn-default btn-xs m-r-5 view_slider" data-toggle="tooltip" data-original-title="View"><i class="fa fa-eye"></i></button>
                             <button style="cursor:pointer;" class="btn btn-default btn-xs m-r-5 edit_slider" slider-id="{{$slider->id}}"><i class="fa fa-edit"></i></button>
                             <button  class="btn btn-default btn-xs m-r-5 delete_slider" delete-id="{{$slider->id}}"><i style="cursor: pointer" class="fa fa-trash font-14"></i></button>
-
-
-
-                            <script>
-                                $('#showModal{{$slider->id}}').on('show.bs.modal', function (event) {
-                                    var button = $(event.relatedTarget) ;
-                                    var title = button.data('title');
-                                    var motion = button.data('motion');
-                                    var description = button.data('description');
-                                    var link1 = button.data('link1');
-                                    var link2 = button.data('link2');
-                                    var image = button.data('image');
-                                    // alert(title);
-                                    // alert(icon);
-                                    // alert(description);
-                                    var modal = $(this);
-                                    // modal.find('.modal-title').text(title1);
-                                    modal.find('.modal-body #title' ).text(title);
-                                    modal.find('.modal-body #motion').text(motion);
-                                    modal.find('.modal-body #description').text(description);
-                                    modal.find('.modal-body #link1').text(link1);
-                                    modal.find('.modal-body #link2').text(link2);
-                                    modal.find('.modal-body #image').text(image);
-                                })
-                            </script>
-
                         </td>
                     </tr>
                 @endforeach
@@ -91,8 +68,65 @@
             </table>
         </div>
     </div>
-    </div>
 
+    <!--- add-slider-Modal-show -->
+    <div class="modal fade" id="addSlider" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" >
+                    <form class="form-horizontal" enctype="multipart/form-data" id="addForm">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Title</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" name="title" id="addTitle">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Motion</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" name="motion" id="addMotion">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">link-1</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" name="link1" id="addLink1">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">link-2</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="text" name="link2" id="addLink2">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">Description</label>
+                            <div class="col-sm-10">
+                                <textarea name="description" maxlength="300" rows="4" placeholder="Description..." class="form-control" id="addDesc"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">link-2</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" type="file" name="image" id="addImage">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-10 ml-sm-auto">
+                                <button class="btn btn-info text-right" type="submit" id="addSubmit">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end-add-Modal-show -->
 
     <!--- single view Modal-show -->
     <div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -161,9 +195,67 @@
             </div>
         </div>
     </div>
-    <!--end-Modal-show -->
 
     <script>
+        {{--    add-slider--}}
+            $('#addForm').on('submit',function (e) {
+            e.preventDefault();
+            let sliderTitle=$('#addTitle').val();
+            let sliderMotion=$('#addMotion').val();
+            let sliderLink1=$('#addLink1').val();
+            let sliderLink2=$('#addLink2').val();
+            let sliderDesc=$('#addDesc').val();
+            let sliderImg=$('#addImage').val();
+
+            let data=new FormData();
+            data.append('title',sliderTitle);
+            data.append('motion',sliderMotion);
+            data.append('link1',sliderLink1);
+            data.append('title2',sliderLink2);
+            data.append('description',sliderDesc);
+            data.append('image',sliderImg);
+            data.append('_token', '{{ csrf_token() }}');
+
+            $.ajax({
+                type:"POST",
+                url:"slider/add/",
+                processData: false, contentType: false,
+                data:data,
+
+                success:function (response) {
+                    let newSlider = `<tr class="slider-row-${response}">
+                        <td>
+                            <label class="ui-checkbox">
+                                <input type="checkbox">
+                                <span class="input-span"></span>
+                            </label>
+                        </td>
+                        <td> ${response} </td>
+                        <td class="row-title-${response}"> ${sliderTitle} </td>
+                        <td class="row-icon-${response}"> ${sliderMotion} </td>
+                        <td class="row-desc-${response}"> ${sliderDesc} </td>
+                        <td class="row-desc-${response}"> ${sliderLink1} </td>
+                        <td class="row-desc-${response}"> ${sliderLink2} </td>
+                        <td class="row-desc-${response}"> ${sliderImg} </td>
+                        <td>
+                            <button data-target="#showModal" data-toggle="modal" slider-id="${response}"
+                                    class="btn btn-default btn-xs m-r-5 view_services"><i class="fa fa-eye"></i></button>
+                            <button slid-id="${response}" class="btn btn-default btn-xs m-r-5 edit_service"
+                                    data-toggle="tooltip" data-original-title="Edit"><i class="fa fa-edit"></i></button>
+                            <button  data-toggle="modal" onclick="deleteSlider(${response})"
+                                     class="btn btn-default btn-xs m-r-5 delete_services">
+                                <i style="cursor: pointer" class="fa fa-trash font-14"></i></button>
+                        </td>
+                    </tr>`;
+                    $('#all_slider').append(newSlider);
+
+                    toastr["success"]("New Slider added!")
+                }
+            });
+        });
+        {{--   end-add-slider--}}
+
+        <!--end-Modal-show -->
         $('.view_slider').on('click', function () {
             let id = this.getAttribute('slider-id');
             // console.log(id);

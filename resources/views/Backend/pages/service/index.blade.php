@@ -22,7 +22,7 @@
             </div>
         </div>
             <div class="add_btn text-right pr-5">
-                <button class="btn btn-secondary add_service" data-toggle="modal" data-target="#addservice">Add service</button>
+                <button class="btn btn-secondary" data-toggle="modal" data-target="#addservice">Add service</button>
             </div>
         <!-- /.container-fluid -->
     </section>
@@ -79,7 +79,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body" id="slider_body">
+                <div class="modal-body">
                     <form class="form-horizontal" enctype="multipart/form-data" id="editForm">
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Title</label>
@@ -137,7 +137,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body" id="slider_body">
+                <div class="modal-body">
                     <form class="form-horizontal" enctype="multipart/form-data" id="addForm">
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Title</label>
@@ -159,7 +159,7 @@
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-10 ml-sm-auto">
-                                <button class="btn btn-info text-right" type="submit" id="addSubmit">Submit</button>
+                                <button class="btn btn-info text-right" type="submit"  id="addSubmit">Submit</button>
                             </div>
                         </div>
                     </form>
@@ -167,6 +167,9 @@
             </div>
         </div>
     </div>
+    {{--    end-service add model--}}
+
+
     <!---data-Modal-show -->
     <script>
         $('.view_services').on('click',function () {
@@ -274,8 +277,8 @@
             let servIcon = $('#addIcon').val();
             let data = new FormData();
             data.append('title', servTitle);
-            data.append('description', servDesc);
             data.append('icon', servIcon);
+            data.append('description', servDesc);
             data.append('_token', '{{ csrf_token() }}');
 
             $.ajax({
@@ -294,8 +297,8 @@
                         </td>
                         <td> ${response} </td>
                         <td class="row-title-${response}"> ${servTitle} </td>
-                        <td class="row-desc-${response}"> ${servDesc} </td>
                         <td class="row-icon-${response}"> ${servIcon} </td>
+                        <td class="row-desc-${response}"> ${servDesc} </td>
                         <td>
                             <button data-target="#showModal" data-toggle="modal" service-id="${response}"
                                     class="btn btn-default btn-xs m-r-5 view_services"><i class="fa fa-eye"></i></button>
