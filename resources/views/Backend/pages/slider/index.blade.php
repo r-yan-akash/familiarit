@@ -58,8 +58,8 @@
                         <td>{!!  substr(strip_tags($slider->link1), 0, 10) !!}...</td>
                         <td><img class="img-row-{{$slider->id}}" style="width: 80px; height: 80px; object-fit: cover" src="{{asset($slider->image)}}" alt=""></td>
                         <td>
-                            <button style="cursor:pointer;" slider-id="{{$slider->id}}" data-toggle="modal" data-target="#showModal" class="btn btn-default btn-xs m-r-5 view_slider" data-toggle="tooltip" data-original-title="View"><i class="fa fa-eye"></i></button>
-                            <button style="cursor:pointer;" class="btn btn-default btn-xs m-r-5 edit_slider" slider-id="{{$slider->id}}"><i class="fa fa-edit"></i></button>
+                            <button style="cursor:pointer;" slider-id="{{$slider->id}}" class="btn btn-default btn-xs m-r-5 view_slider" onclick="viewSlider({{$slider->id}})"><i class="fa fa-eye"></i></button>
+                            <button style="cursor:pointer;" class="btn btn-default btn-xs m-r-5 edit_slider" slider-id="{{$slider->id}}" onclick="editSlider({{$slider->id}})"><i class="fa fa-edit"></i></button>
                             <button  class="btn btn-default btn-xs m-r-5 delete_slider" delete-id="{{$slider->id}}"><i style="cursor: pointer" class="fa fa-trash font-14"></i></button>
                         </td>
                     </tr>
@@ -155,7 +155,6 @@
                     </button>
                 </div>
                 <div class="modal-body" id="slider_body">
-                    <form class="form-horizontal" enctype="multipart/form-data" id="editForm">
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Title</label>
                             <div class="col-sm-10">
@@ -179,7 +178,7 @@
 
                         <div class="form-group row">
                             <div class="col-sm-10 ml-sm-auto">
-                                <button class="btn btn-info text-right" type="submit" id="editSubmit">Submit</button>
+                                <button class="btn btn-info text-right" id="editSubmit">Submit</button>
                             </div>
                         </div>
 
@@ -189,8 +188,6 @@
                                 <img style="width: 150px; height: 150px; object-fit: cover" src="" alt="" id="oldImg" >
                             </div>
                         </div>
-
-                    </form>
                 </div>
             </div>
         </div>
@@ -200,12 +197,13 @@
         {{--    add-slider--}}
             $('#addForm').on('submit',function (e) {
             e.preventDefault();
-            let sliderTitle=$('#addTitle').val();
-            let sliderMotion=$('#addMotion').val();
-            let sliderLink1=$('#addLink1').val();
-            let sliderLink2=$('#addLink2').val();
-            let sliderDesc=$('#addDesc').val();
-            let sliderImg=$('#addImage').val();
+            let sliderTitle= $('#addTitle').val();
+            let sliderMotion= $('#addMotion').val();
+            let sliderLink1= $('#addLink1').val();
+            let sliderLink2= $('#addLink2').val();
+            let sliderDesc= $('#addDesc').val();
+            let sliderImg = document.getElementById('addImage').files[0];
+
 
             let data=new FormData();
             data.append('title',sliderTitle);
@@ -231,23 +229,25 @@
                             </label>
                         </td>
                         <td> ${response} </td>
-                        <td class="row-title-${response}"> ${sliderTitle} </td>
-                        <td class="row-icon-${response}"> ${sliderMotion} </td>
-                        <td class="row-desc-${response}"> ${sliderDesc} </td>
-                        <td class="row-desc-${response}"> ${sliderLink1} </td>
-                        <td class="row-desc-${response}"> ${sliderLink2} </td>
-                        <td class="row-desc-${response}"> ${sliderImg} </td>
+                        <td class="title-row-${response}"> ${sliderTitle} </td>
+                        <td class="icon-row-${response}"> ${sliderMotion} </td>
+                        <td class="desc-row-${response}"> ${sliderDesc} </td>
+                        <td class="link1-row-${response}"> ${sliderLink1} </td>
+                        <td class="link2-row${response}"> ${sliderLink2} </td>
+                        <td> <img class="img-row-${response}" style="width: 80px; height: 80px; object-fit: cover" src="${window.URL.createObjectURL(sliderImg)}" alt=""> </td>
                         <td>
-                            <button data-target="#showModal" data-toggle="modal" slider-id="${response}"
+                            <button slider-id="${response}" onclick="viewSlider(${response})"
                                     class="btn btn-default btn-xs m-r-5 view_services"><i class="fa fa-eye"></i></button>
                             <button slid-id="${response}" class="btn btn-default btn-xs m-r-5 edit_service"
-                                    data-toggle="tooltip" data-original-title="Edit"><i class="fa fa-edit"></i></button>
+                                    onclick="editSlider(${response})"><i class="fa fa-edit"></i></button>
                             <button  data-toggle="modal" onclick="deleteSlider(${response})"
                                      class="btn btn-default btn-xs m-r-5 delete_services">
                                 <i style="cursor: pointer" class="fa fa-trash font-14"></i></button>
                         </td>
                     </tr>`;
                     $('#all_slider').append(newSlider);
+                    $('#addSlider').modal('hide');
+                    $('#addForm')[0].reset()
 
                     toastr["success"]("New Slider added!")
                 }
@@ -259,26 +259,27 @@
         $('.view_slider').on('click', function () {
             let id = this.getAttribute('slider-id');
             // console.log(id);
+
+        });
+
+        function  viewSlider(id) {
             $.ajax({
                 url: '/single-slider',
                 type: "post",
                 data: { _token: "{{ csrf_token() }}", id:id},
                 success: function(response){
-                    // console.log(response)
+                    $('#showModal').modal('show');
                     $('#slider_body').html("<img style='width: 100%; height: 350px; object-fit: cover' src='"+ response.image+"' /> <h3 class='mt-2'>"+response.title+"</h3> <p class='mt-1'> "+response.description+"</p> ")
                 }
             });
-        });
+        }
 
-        // eidt view
-        $('.edit_slider').click(function () {
-            let id = $(this).attr("slider-id");
-            let data = {id : id}; //$_POST['id'] = id(slider-id)
+        function editSlider(id){
             $.ajax({
                 type:"GET",
                 cache:false,
                 url:"/slider/edit/",
-                data:data,
+                data:{id : id},
                 success: function (response) {
                     $('#editModal').modal('show');
                     $('#editTitle').val(response.title);
@@ -292,19 +293,20 @@
                         $('#editDesc').val(desc);
                     }
                     $('#oldImg').attr('src', response.image);
-                    document.getElementById('editSubmit').setAttribute('update-id', id);
+                    document.getElementById('editSubmit').setAttribute('onclick', 'updateSlider('+id+')');
                 }
             });
-        });
+        }
 
-        // edit form submit
-        $('#editSubmit').on('click', function(e) {
-            e.preventDefault();
-            let id = $(this).attr("update-id");
+//      update slider
+        function updateSlider(id){
+
+            let editTitle = $('#editTitle').val();
+            let editDesc = $('#editDesc').val();
             let data = new FormData();
             data.append('id', id);
-            data.append('title', $('#editTitle').val());
-            data.append('description', $('#editDesc').val());
+            data.append('title', editTitle);
+            data.append('description', editDesc);
             let img = document.getElementById('editImage').files[0];
 
             if (img){
@@ -320,16 +322,18 @@
                 success: function (response) {
                     toastr["success"]("Data has been Updated!");
                     //change real data in table
-                    $('.title-row-'+id).text($('#editTitle').val());
-                    $('.desc-row-'+id).text($('#editDesc').val());
+                    $('.title-row-'+id).text(editTitle);
+                    $('.desc-row-'+id).text(editDesc);
                     if (img){
                         $('.img-row-'+id).attr('src', window.URL.createObjectURL(img));
                     }
+
                     $('#editModal').modal('hide');
+
+
                 }
             });
-        });
-
+        }
         // delete slider
         $('.delete_slider').on('click', function(){
             let id = $(this).attr("delete-id");
