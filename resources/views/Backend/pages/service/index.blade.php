@@ -56,7 +56,7 @@
                             <button data-target="#showModal" data-toggle="modal" service-id="{{$singleService->id}}"
                                     class="btn btn-default btn-xs m-r-5 view_services"><i class="fa fa-eye"></i></button>
 
-                            <button ser-id="{{$singleService->id}}" class="btn btn-default btn-xs m-r-5 edit_service"
+                            <button onclick="editServices({{$singleService->id}})" class="btn btn-default btn-xs m-r-5 edit_service"
                                     data-toggle="tooltip" data-original-title="Edit"><i class="fa fa-edit"></i></button>
 
                             <button  data-toggle="modal" service-id="{{$singleService->id}}" onclick="deleteService({{$singleService->id}})"
@@ -80,7 +80,6 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form class="form-horizontal" enctype="multipart/form-data" id="editForm">
                         <div class="form-group row">
                             <label class="col-sm-2 col-form-label">Title</label>
                             <div class="col-sm-10">
@@ -101,10 +100,9 @@
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-10 ml-sm-auto">
-                                <button class="btn btn-info text-right" type="submit" id="editSubmit">Submit</button>
+                                <button class="btn btn-info text-right" type="submit"  id="editSubmit">Submit</button>
                             </div>
                         </div>
-                    </form>
                 </div>
             </div>
         </div>
@@ -169,7 +167,6 @@
     </div>
     {{--    end-service add model--}}
 
-
     <!---data-Modal-show -->
     <script>
         $('.view_services').on('click',function () {
@@ -212,18 +209,13 @@
         }
 
         // edit-service
-
-        $('.edit_service').click(function () {
-            let id=$(this).attr("ser-id");
-            let data={id:id};
+    function editServices(id){
             $.ajax({
                 type:"GET",
-                url:"/services/edit",
                 cache:false,
-                data:data,
-
-                success:function (response) {
-                    console.log(response)
+                url:"/services/edit",
+                data:{id:id},
+                success:function (response){
                     $('#editModal').modal('show');
                     $('#editTitle').val(response.title);
                     $('#editIcon').val(response.icon);
@@ -235,20 +227,21 @@
                     else{
                         $('#editDesc').val(desc);
                     }
-                    document.getElementById('editSubmit').setAttribute('update-id', id);
+                    document.getElementById('editSubmit').setAttribute('onclick','updateServices('+id+')');
                 }
             });
-        });
-        // edit form submit
-        $('#editSubmit').on('click', function(e) {
-            e.preventDefault();
-            let id = $(this).attr("update-id");
-            let data = new FormData();
-            data.append('id', id);
-            data.append('title', $('#editTitle').val());
-            data.append('description', $('#editDesc').val());
-            data.append('icon', $('#editIcon').val());
+        }
+//update-services
+        function updateServices(id) {
 
+            let editTitle = $('#editTitle').val();
+            let editDesc = $('#editDesc').val();
+            let editIcon = $('#editIcon').val();
+            let data = new FormData();
+            data.append('id',id);
+            data.append('title',editTitle);
+            data.append('description',editDesc);
+            data.append('icon',editIcon);
             data.append('_token', '{{ csrf_token() }}');
 
             $.ajax({
@@ -256,17 +249,76 @@
                 url:"services/update/",
                 processData: false, contentType: false,
                 data:data,
-                success: function (response) {
-
-                    //change real data in table
-                    $('.row-title-'+id).text($('#editTitle').val());
-                    $('.row-icon-'+id).text($('#editIcon').val());
-                    $('.row-desc-'+id).text($('#editDesc').val());
+                success:function (response) {
+                    // console.log(editTitle)
+                    // return
+                    $('.row-title-'+id).text(editTitle);
+                    $('.row-desc-'+id).text(editDesc);
+                    $('.row-icon-'+id).text(editIcon);
+                    toastr["success"] ("Data has been Updated--!");
                     $('#editModal').modal('hide');
-                    toastr["success"]("Data has been Updated!")
+
                 }
             });
-        });
+        }
+
+
+
+
+        {{--$('.edit_service').click(function () {--}}
+        {{--    let id=$(this).attr("ser-id");--}}
+        {{--    let data={id:id};--}}
+        {{--    $.ajax({--}}
+        {{--        type:"GET",--}}
+        {{--        url:"/services/edit",--}}
+        {{--        cache:false,--}}
+        {{--        data:data,--}}
+
+        {{--        success:function (response) {--}}
+        {{--            console.log(response)--}}
+        {{--            $('#editModal').modal('show');--}}
+        {{--            $('#editTitle').val(response.title);--}}
+        {{--            $('#editIcon').val(response.icon);--}}
+        {{--            // check if html--}}
+        {{--            let desc = response.description;--}}
+        {{--            if ( desc.search('<') !== -1){--}}
+        {{--                $('#editDesc').val($(desc).text());--}}
+        {{--            }--}}
+        {{--            else{--}}
+        {{--                $('#editDesc').val(desc);--}}
+        {{--            }--}}
+        {{--            document.getElementById('editSubmit').setAttribute('update-id', id);--}}
+        {{--        }--}}
+        {{--    });--}}
+        {{--});--}}
+        {{--// edit form submit--}}
+        {{--$('#editSubmit').on('click', function(e) {--}}
+        {{--    e.preventDefault();--}}
+        {{--    let id = $(this).attr("update-id");--}}
+        {{--    let data = new FormData();--}}
+        {{--    data.append('id', id);--}}
+        {{--    data.append('title', $('#editTitle').val());--}}
+        {{--    data.append('description', $('#editDesc').val());--}}
+        {{--    data.append('icon', $('#editIcon').val());--}}
+
+        {{--    data.append('_token', '{{ csrf_token() }}');--}}
+
+        {{--    $.ajax({--}}
+        {{--        type:"POST",--}}
+        {{--        url:"services/update/",--}}
+        {{--        processData: false, contentType: false,--}}
+        {{--        data:data,--}}
+        {{--        success: function (response) {--}}
+
+        {{--            //change real data in table--}}
+        {{--            $('.row-title-'+id).text($('#editTitle').val());--}}
+        {{--            $('.row-icon-'+id).text($('#editIcon').val());--}}
+        {{--            $('.row-desc-'+id).text($('#editDesc').val());--}}
+        {{--            $('#editModal').modal('hide');--}}
+        {{--            toastr["success"]("Data has been Updated!")--}}
+        {{--        }--}}
+        {{--    });--}}
+        {{--});--}}
 
         // add service
         $('#addForm').on('submit', function (e) {
@@ -302,7 +354,7 @@
                         <td>
                             <button data-target="#showModal" data-toggle="modal" service-id="${response}"
                                     class="btn btn-default btn-xs m-r-5 view_services"><i class="fa fa-eye"></i></button>
-                            <button ser-id="${response}" class="btn btn-default btn-xs m-r-5 edit_service"
+                            <button onclick="editServices(${response})" class="btn btn-default btn-xs m-r-5 edit_service"
                                     data-toggle="tooltip" data-original-title="Edit"><i class="fa fa-edit"></i></button>
                             <button  data-toggle="modal" onclick="deleteService(${response})"
                                      class="btn btn-default btn-xs m-r-5 delete_services">

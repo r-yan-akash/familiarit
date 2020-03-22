@@ -98,7 +98,6 @@ class SliderController extends Controller
                 unlink(public_path().$oldImg->image);
             }
         }
-
         return Slider::where('id', $request->id)->update($data);
 
     }
@@ -115,14 +114,41 @@ class SliderController extends Controller
 
     public function delete(Request $request){
 
-        $delete = Slider::where('id', $request->id)->delete();
+//        $delete = Slider::where('id', $request->id)->first();
+//        $file=$request->image;
+//        if($file){
+//            unlink('/backend/uploads/slider/'.$delete->image);
+//            return Slider::where('id', $request->id)->delete();
+//
+//        }else{
+//
+//            dd('File does not exists.');
+//
+//        }
+//
+//        if ($delete){
+//            return 'delete successful';
+//        }
+//        else{
+//            return 'delete failed';
+//        }
+        $old = Slider::where('id', $request->id)->first();
+//        Storage::delete( public_path('/backend/uploads/slider/' . $old->image));
 
-        if ($delete){
-            return 'delete successful';
+//        if image found
+        $file = $request->image;
+
+        if ($file){
+            $path = '/backend/uploads/slider/';
+            $image = $path.time().'.'.$file->getClientOriginalExtension();
+            $data = [
+                'image' =>$image
+            ];
+            if ($old){
+                unlink(public_path().$old->image);
+            }
         }
-        else{
-            return 'delete failed';
-        }
+        return Slider::where('id', $request->id)->delete();
     }
 
     function add(Request $request){
@@ -136,6 +162,7 @@ class SliderController extends Controller
 
         $slider = Slider::create([
             'title' => $request->title,
+            'motion' => $request->motion,
             'description' => $request->description,
             'link1' =>$request->link1,
             'link2' =>$request->link1,

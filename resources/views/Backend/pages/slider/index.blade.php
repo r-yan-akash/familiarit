@@ -52,7 +52,7 @@
                         </td>
                         <td>{{++$key}}</td>
                         <td class="title-row-{{$slider->id}}">{!!  substr(strip_tags($slider->title), 0, 10) !!}...</td>
-                        <td>{{$slider->motion}}</td>
+                        <td class="motion-row-{{$slider->id}}">{!!  substr(strip_tags($slider->motion), 0, 10) !!}...</td>
                         <td class="desc-row-{{$slider->id}}">{!!  substr(strip_tags($slider->description), 0, 10) !!}...</td>
                         <td>{!!  substr(strip_tags($slider->link1), 0, 10) !!}...</td>
                         <td>{!!  substr(strip_tags($slider->link1), 0, 10) !!}...</td>
@@ -60,7 +60,9 @@
                         <td>
                             <button style="cursor:pointer;" slider-id="{{$slider->id}}" class="btn btn-default btn-xs m-r-5 view_slider" onclick="viewSlider({{$slider->id}})"><i class="fa fa-eye"></i></button>
                             <button style="cursor:pointer;" class="btn btn-default btn-xs m-r-5 edit_slider" slider-id="{{$slider->id}}" onclick="editSlider({{$slider->id}})"><i class="fa fa-edit"></i></button>
-                            <button  class="btn btn-default btn-xs m-r-5 delete_slider" delete-id="{{$slider->id}}"><i style="cursor: pointer" class="fa fa-trash font-14"></i></button>
+                            <button  class="btn btn-default btn-xs m-r-5 delete_slider"
+                                     delete-id="{{$slider->id}}" onclick="deleteSlider({{$slider->id}})">
+                                <i style="cursor: pointer" class="fa fa-trash font-14"></i></button>
                         </td>
                     </tr>
                 @endforeach
@@ -197,11 +199,12 @@
         {{--    add-slider--}}
             $('#addForm').on('submit',function (e) {
             e.preventDefault();
+            let maxLength = 10;
             let sliderTitle= $('#addTitle').val();
             let sliderMotion= $('#addMotion').val();
             let sliderLink1= $('#addLink1').val();
             let sliderLink2= $('#addLink2').val();
-            let sliderDesc= $('#addDesc').val();
+            let sliderDesc= $('#addDesc').val().substring(0, maxLength);
             let sliderImg = document.getElementById('addImage').files[0];
 
 
@@ -230,7 +233,7 @@
                         </td>
                         <td> ${response} </td>
                         <td class="title-row-${response}"> ${sliderTitle} </td>
-                        <td class="icon-row-${response}"> ${sliderMotion} </td>
+                        <td class="motion-row-${response}"> ${sliderMotion} </td>
                         <td class="desc-row-${response}"> ${sliderDesc} </td>
                         <td class="link1-row-${response}"> ${sliderLink1} </td>
                         <td class="link2-row${response}"> ${sliderLink2} </td>
@@ -241,7 +244,7 @@
                             <button slid-id="${response}" class="btn btn-default btn-xs m-r-5 edit_service"
                                     onclick="editSlider(${response})"><i class="fa fa-edit"></i></button>
                             <button  data-toggle="modal" onclick="deleteSlider(${response})"
-                                     class="btn btn-default btn-xs m-r-5 delete_services">
+                                     class="btn btn-default btn-xs m-r-5 delete_slider">
                                 <i style="cursor: pointer" class="fa fa-trash font-14"></i></button>
                         </td>
                     </tr>`;
@@ -335,22 +338,39 @@
             });
         }
         // delete slider
-        $('.delete_slider').on('click', function(){
-            let id = $(this).attr("delete-id");
-            $.ajax({
-                type:"GET",
-                cache:false,
-                url:"slider/delete/",
-                data:{id:id},
-                success: function (response) {
-                    console.log(response);
-                    // slider remove
-                    $('.slider-row-'+id).remove();
-                    // notification
-                    toastr["success"]("Data has been deleted!")
-                }
-            });
-        })
+        function deleteSlider(id){
+            if (confirm('Are you sure to delete..?')){
+                $.ajax({
+                    type:"GET",
+                    cache:false,
+                    url:"slider/delete/",
+                    data:{id:id},
+                    success: function (response) {
+                        console.log(response);
+                        // slider remove
+                        $('.slider-row-' + id).remove();
+                        // notification
+                        toastr["success"]("Data has been deleted!")
+                    }
+                });
+            }
+        }
+        // $('.delete_slider').on('click', function(){
+        //     let id = $(this).attr("delete-id");
+        //     $.ajax({
+        //         type:"GET",
+        //         cache:false,
+        //         url:"slider/delete/",
+        //         data:{id:id},
+        //         success: function (response) {
+        //             console.log(response);
+        //             // slider remove
+        //             $('.slider-row-'+id).remove();
+        //             // notification
+        //             toastr["success"]("Data has been deleted!")
+        //         }
+        //     });
+        // })
     </script>
 
 

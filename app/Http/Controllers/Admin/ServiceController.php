@@ -47,7 +47,6 @@ class ServiceController extends Controller
 
     public function update(Request $request)
     {
-
 //        return $request->id;
         Services::where('id', $request->id)->update([
            'title' => $request->title,
